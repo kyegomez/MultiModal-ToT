@@ -2,6 +2,7 @@ import logging
 
 from shapeless import liquid
 from tot.mm_llm import MultiModalInference
+from tot.ttv import TextToVideo
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ class MMTot:
         self.output = []
         self.openai_api_key = openai_api_key
         self.llm = MultiModalInference()
-        self.image_generator = StableDiffusion()
+        self.image_generator = TextToVideo()
 
     def solve(self):
             try:
