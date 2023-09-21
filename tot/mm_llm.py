@@ -61,7 +61,7 @@ class MultiModalInference:
         checkpoint="HuggingFaceM4/idefics-9b-instruct",
         device=None,
         torch_dtype=torch.bfloat16,
-        max_length=100
+        max_length=3000
     ):
         self.device = device if device else (
             "cuda" if torch.cuda.is_available() else "cpu"

@@ -1,6 +1,5 @@
 import logging
 
-from shapeless import liquid
 from tot.mm_llm import MultiModalInference
 from tot.ttv import TextToVideo
 

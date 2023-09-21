@@ -5,8 +5,8 @@ from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 class TextToVideo:
     def __init__(
         self,
-        model_id,
-        output_path
+        model_id: str = "stabilityai/stable-diffusion-2-1",
+        output_path: str = "output.png"
     ):
         self.model_id = model_id
         self.output_path = output_path
