@@ -1,19 +1,32 @@
 import logging
 
 from shapeless import liquid
+from tot.mm_llm import MultiModalInference
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-@liquid
 class MMTot:
-    num_thoughts = 3
-    max_steps: int = None
-    value_of_threshold: float = None
-    pruning_threshold = 0.5
-    bestracking_threshold = 0.5
-    initial_prompt = None
-    openai_api_key = None
+    def __init__(
+        self, 
+        num_thoughts: int = None, 
+        max_steps: int = None, 
+        value_threshold: float = None, 
+        pruning_threshold=0.5,
+        backtracking_threshold=0.4,
+        initial_prompt=None,
+        openai_api_key: str = None
+    ):
+        self.num_thoughts = num_thoughts
+        self.max_steps = max_steps
+        self.value_threshold = value_threshold
+        self.backtracking_threshold = backtracking_threshold
+        self.pruning_threshold = pruning_threshold
+        self.initial_prompt = initial_prompt
+        self.output = []
+        self.openai_api_key = openai_api_key
+        self.llm = MultiModalInference()
+        self.image_generator = StableDiffusion()
 
     def solve(self):
             try:
