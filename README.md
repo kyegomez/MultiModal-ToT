@@ -1,14 +1,15 @@
 [![Multi-Modality](agorabanner.png)](https://discord.gg/qUtxnK2NMf)
 
-# Paper-Implementation-Template
-A simple reproducible template to implement AI research papers 
+# MultiModal Tree of Thoughts
+Multi-Modal Foundation Model -> Deepfloyd iF or stable diffusion -> mmllm -> if
 
-Paper Link
+The objective is to implement DALLE-3 where given an input task to generate an image => its fed and enriched by the multimodal llm => passed into image generation
+
+
 
 # Appreciation
 * Lucidrains
 * Agorians
-
 
 
 # Install
@@ -22,6 +23,4 @@ Paper Link
 
 # License
 MIT
-
-# Citations
 
