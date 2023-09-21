@@ -13,8 +13,11 @@ The objective is to implement DALLE-3 where given an input task to generate an i
 
 
 # Install
+`pip install mm-tot`
 
 # Usage
+
+
 
 # Architecture
 
