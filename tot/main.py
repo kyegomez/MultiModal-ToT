@@ -1,5 +1,4 @@
 import logging
-
 from tot.mm_llm import MultiModalInference
 from tot.ttv import TextToVideo
 
@@ -20,29 +19,34 @@ class MMTot:
         self.num_thoughts = num_thoughts
         self.max_steps = max_steps
         self.value_threshold = value_threshold
+
         self.backtracking_threshold = backtracking_threshold
         self.pruning_threshold = pruning_threshold
         self.initial_prompt = initial_prompt
+
         self.output = []
         self.openai_api_key = openai_api_key
         self.llm = MultiModalInference()
-        self.image_generator = TextToVideo()
+        self.tti = TextToVideo()
 
     def solve(self):
-            try:
-                self.dfs(self.initial_prompt, 1)
+        try:
+            enriched_prompt = self.llm.run(self.initial_prompt)
+            self.tti.run(enriched_prompt)
+            self.dfs(enriched_prompt, 1)
 
-                if not self.output:
-                    logger.error("No valid thoughts were generated during DFS")
-                    return None
+            if not self.output:
+                logger.error("No valid thoughts were generated during DFS")
+                return None
                 
-                best_state, _ = max(self.output, key=lambda x: x[1])
-                solution = self.model.generate_solution(self.initial_prompt, best_state)
-                print(f"Solution is {solution}")
-                return solution if solution else best_state
-            except Exception as error:
-                logger.error(f"Error in tot_dfs: {error}")
-                raise error
+            best_state, _ = max(self.output, key=lambda x: x[1])
+            solution = self.llm.generate_solution(self.initial_prompt, best_state)
+            print(f"Solution is {solution}")
+
+            return solution if solution else best_state
+        except Exception as error:
+            logger.error(f"Error in tot_dfs: {error}")
+            raise error
 
     def dfs(self, state, step):
         if step > self.max_steps:
@@ -51,6 +55,7 @@ class MMTot:
             return
 
         thoughts = self.generate_and_filter_thoughts(state)
+        
         for next_state in thoughts:
             state_value = self.evaluated_thoughts[next_state]
             if state_value > self.value_threshold:
@@ -64,13 +69,15 @@ class MMTot:
                     continue
 
     def generate_and_filter_thoughts(self, state):
-        thoughts = self.model.generate_thoughts(
-            state, 
+        enriched_state = self.llm.run(state)
+        self.tti.run(enriched_state)
+        thoughts = self.llm.generate_thoughts(
+            enriched_state, 
             self.num_thoughts, 
             self.initial_prompt
         )
 
-        self.evaluated_thoughts = self.model.evaluate_states(
+        self.evaluated_thoughts = self.llm.evaluate_states(
             thoughts, 
             self.initial_prompt
         )
@@ -83,10 +90,15 @@ class MMTot:
         return filtered_thoughts
 
     def evaluate_thought(self, state):
-        thought = self.model.generate_thoughts(state, 1, self.initial_prompt)
-        value = self.model.evaluate_states(
-            [state], 
+        enriched_state = self.llm.run(state)
+        self.tti.run(enriched_state)
+        thought = self.llm.generate_thoughts(enriched_state, 1, self.initial_prompt)
+
+        value = self.llm.evaluate_states(
+            [enriched_state], 
             self.initial_prompt
-        )[state]
+        )[enriched_state]
+
         print(f"Evaluated thought: {value}")
+
         return thought, value
