@@ -1,5 +1,5 @@
 import torch
-from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
+from diffusers import DPMSolverMultistepScheduler, StableDiffusionPipeline
 
 
 class TextToVideo:

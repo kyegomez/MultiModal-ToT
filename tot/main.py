@@ -1,4 +1,5 @@
 import logging
+
 from tot.mm_llm import MultiModalInference
 from tot.ttv import TextToVideo
 
