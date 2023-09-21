@@ -5,6 +5,7 @@ from tot.ttv import TextToVideo
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
 class MMTot:
     def __init__(
         self, 
