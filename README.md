@@ -15,24 +15,8 @@ task: Generate an image of a swarm of bees -> Image generator -> GPT4V evaluates
 - The output will be evaluated by GPT4Vision
 - The prompt to the image generator will be optimized from the output of GPT4Vision and the search
 
-# Install
-`pip install mm-tot`
-
 # Usage
-```python
-from tot.main import MMTot
-
-mmtot = MMTot(
-    num_thoughts=3, 
-    max_steps=5, 
-    value_threshold=0.7, 
-    initial_prompt="Generate an image of a city skyline at night."
-)
-
-solution = mmtot.solve()
-print(f"Solution: {solution}")
-```
-
+`streamlit run app.py`
 
 # License
 MIT
