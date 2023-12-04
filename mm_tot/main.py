@@ -78,35 +78,53 @@ def enrichment_prompt(starting_prompt: str, evaluated_img: str):
     return enrichment_task
 
 
-# Main loop
-max_iterations = 10  # Define the maximum number of iterations
-best_score = 0
-best_image = None
+def mm_tot(
+    max_iterations: int = 10,
+    task: str = None,
+    img_generator = None,
+    llm = None,
+):
+    """Multi Modal tree of thoughts that leverages the GPT-4 language model and the
 
-for _ in range(max_iterations):
-    # Generate an image and get its path
-    print(colored(f"Generating img for Task: {task}", "purple"))
-    
-    img_path = img_generator.run(task=task)  # This should return the file path of the generated image
-    img_path = img_path[0]
-    print(colored(f"Generated Image Path: {img_path}", "green"))
+    Args:
+        max_iterations (int, optional): _description_. Defaults to 10.
+        task (str, optional): _description_. Defaults to None.
+        img_generator (_type_, optional): _description_. Defaults to None.
+        llm (_type_, optional): _description_. Defaults to None.
 
-    # Evaluate the image by passing the file path
-    score = evaluate_img(llm, task, img_path)
-    print(colored(f"Evaluated Image Score: {score} for {img_path}", "cyan"))
+    Returns:
+        _type_: _description_
+    """
 
-    # Update the best score and image path if necessary
-    if score > best_score:
-        best_score = score
-        best_image_path = img_path
+    # Main loop
+    max_iterations = 10  # Define the maximum number of iterations
+    best_score = 0
+    best_image = None
 
-    # Enrich the prompt based on the evaluation
-    prompt = enrichment_prompt(task, score)
-    print(
-        colored(f"Enrichment Prompt: {prompt}", "yellow")
-    )
-    
+    for _ in range(max_iterations):
+        # Generate an image and get its path
+        print(colored(f"Generating img for Task: {task}", "purple"))
+        
+        img_path = img_generator.run(task=task)  # This should return the file path of the generated image
+        img_path = img_path[0]
+        print(colored(f"Generated Image Path: {img_path}", "green"))
 
-# Output the best result
-print("Best Image Path:", best_image_path)
-print("Best Score:", best_score)
+        # Evaluate the image by passing the file path
+        score = evaluate_img(llm, task, img_path)
+        print(colored(f"Evaluated Image Score: {score} for {img_path}", "cyan"))
+
+        # Update the best score and image path if necessary
+        if score > best_score:
+            best_score = score
+            best_image_path = img_path
+
+        # Enrich the prompt based on the evaluation
+        prompt = enrichment_prompt(task, score)
+        print(
+            colored(f"Enrichment Prompt: {prompt}", "yellow")
+        )
+        
+
+    # Output the best result
+    print("Best Image Path:", best_image_path)
+    print("Best Score:", best_score)
